@@ -1,17 +1,13 @@
-from pysmt.shortcuts import And, Or, Not, Iff, ExactlyOne, Solver, Symbol, BOOL, TRUE
+from pysmt.shortcuts import And, Or, Not, Iff, ExactlyOne, Solver, Symbol, BOOL
 
 
 def print_model(model):
     for day in days:
         company = [
-            cname
-            for c, cname in companies.items()
-            if model[day_company[f"c_{day}_{c}"]] == TRUE()
+            cname for c, cname in companies.items() if model[day_company[f"c_{day}_{c}"]].is_true()
         ][0]
         position = [
-            pname
-            for p, pname in positions.items()
-            if model[day_position[f"p_{day}_{p}"]] == TRUE()
+            pname for p, pname in positions.items() if model[day_position[f"p_{day}_{p}"]].is_true()
         ][0]
         print(f"Day {day}: interview for {company} as {position}")
 
@@ -30,12 +26,8 @@ companies = {
     "I": "Streeter Inc.",
 }
 
-day_position = {
-    f"p_{i}_{j}": Symbol(f"p_{i}_{j}", BOOL) for i in days for j in positions
-}
-day_company = {
-    f"c_{i}_{j}": Symbol(f"c_{i}_{j}", BOOL) for i in days for j in companies
-}
+day_position = {f"p_{i}_{j}": Symbol(f"p_{i}_{j}", BOOL) for i in days for j in positions}
+day_company = {f"c_{i}_{j}": Symbol(f"c_{i}_{j}", BOOL) for i in days for j in companies}
 
 assertions = []
 

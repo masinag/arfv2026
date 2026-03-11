@@ -1,13 +1,4 @@
-from pysmt.shortcuts import (
-    And,
-    Or,
-    Symbol,
-    BOOL,
-    ExactlyOne,
-    Solver,
-    TRUE,
-    write_smtlib,
-)
+from pysmt.shortcuts import And, Or, Symbol, BOOL, ExactlyOne, Solver, write_smtlib
 from pysmt.solvers.msat import MathSAT5Solver
 
 
@@ -20,7 +11,7 @@ xx = {f"x_{g}_{r}": Symbol(f"x_{g}_{r}", BOOL) for g in guests for r in rooms}
 def print_model(model, last_guest_arrived):
     assignment = {}
     for g in guests:
-        room = [r for r in rooms if model[xx[f"x_{g}_{r}"]] == TRUE()]
+        room = [r for r in rooms if model[xx[f"x_{g}_{r}"]].is_true()]
         assert len(room) == 1
         room = room[0]
         assignment[g] = room
@@ -75,7 +66,10 @@ guests_preferences.append(
 )
 
 guests_preferences.append(
-    (Or(xx["x_E_1"], xx["x_E_5"]), "Guest E would like one of the external rooms.")
+    (
+        Or(xx["x_E_1"], xx["x_E_5"]),
+        "Guest E would like one of the external rooms.",
+    )
 )
 
 write_smtlib(And(a[0] for a in assertions), "reception.smt2")

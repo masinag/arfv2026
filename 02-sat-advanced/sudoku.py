@@ -1,17 +1,15 @@
-from pysmt.shortcuts import BOOL, TRUE, And, Solver, Symbol, ExactlyOne
+from pysmt.shortcuts import BOOL, And, Solver, Symbol, ExactlyOne
 
 SIZE = 9
 nn = list(range(1, SIZE + 1))
 
-xx = {
-    f"x_{i}_{j}_{k}": Symbol(f"x_{i}_{j}_{k}", BOOL) for i in nn for j in nn for k in nn
-}
+xx = {f"x_{i}_{j}_{k}": Symbol(f"x_{i}_{j}_{k}", BOOL) for i in nn for j in nn for k in nn}
 
 
 def print_solution(model):
     for row in nn:
         for col in nn:
-            number = [num for num in nn if model[xx[f"x_{row}_{col}_{num}"]] == TRUE()]
+            number = [num for num in nn if model[xx[f"x_{row}_{col}_{num}"]].is_true()]
             assert len(number) == 1, (number, row, col)
             number = number[0]
             print(number, end=" ")
