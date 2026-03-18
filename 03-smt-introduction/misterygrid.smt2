@@ -24,6 +24,16 @@
 (assert (is-tile x32))
 (assert (is-tile x33))
 
+; each row contains exactly one cell of each type
+(assert (distinct x11 x12 x13))
+(assert (distinct x21 x22 x23))
+(assert (distinct x31 x32 x33))
+
+; each col contains exactly one cell of each type
+(assert (distinct x11 x21 x31))
+(assert (distinct x12 x22 x32))
+(assert (distinct x13 x23 x33))
+
 (assert (= x13 orange))
 (assert (= 12 (+ x11 x21 x31)))
 (assert (= 42 (* x12 x22 x23)))
