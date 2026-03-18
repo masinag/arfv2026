@@ -36,6 +36,7 @@
 (assert (and (or x_A_4 x_B_4 x_C_4 x_D_4 x_E_4) (and (=> x_A_4 (not (or x_B_4 x_C_4 x_D_4 x_E_4))) (=> x_B_4 (not (or x_C_4 x_D_4 x_E_4))) (=> x_C_4 (not (or x_D_4 x_E_4))) (=> x_D_4 (not x_E_4)))))
 (assert (and (or x_A_5 x_B_5 x_C_5 x_D_5 x_E_5) (and (=> x_A_5 (not (or x_B_5 x_C_5 x_D_5 x_E_5))) (=> x_B_5 (not (or x_C_5 x_D_5 x_E_5))) (=> x_C_5 (not (or x_D_5 x_E_5))) (=> x_D_5 (not x_E_5)))))
 
-(assert (! (or x_A_1 x_A_2) :named guestA))
-(assert (! (or x_B_2 x_B_4) :named guestB))
+; preferences of the first two guests
+(assert (or x_A_1 x_A_2))
+(assert (or x_B_2 x_B_4))
 (check-allsat ())
