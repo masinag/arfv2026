@@ -1,0 +1,37 @@
+(set-option :produce-models true)
+
+(declare-const A Int)
+(declare-const B Int)
+(declare-const C Int)
+(declare-const D Int)
+(declare-const E Int)
+(declare-const F Int)
+(declare-const G Int)
+(declare-const H Int)
+
+(assert (= G 0))
+(assert (or (= A (+ B 4)) (= A (+ D 2))))
+(assert (or (= B (+ A 4)) (= B (+ E 6)) (= B (+ C 4))))
+(assert (or (= C (+ B 4)) (= C (+ E 7))))
+(assert (or (= D (+ A 2)) (= D (+ E 3)) (= D (+ F 5))))
+(assert (or (= E (+ B 6)) (= E (+ C 7)) (= E (+ D 3)) (= E (+ H 8))))
+(assert (or (= F (+ D 5)) (= F (+ G 9))))
+(assert (or (= H (+ G 3)) (= H (+ E 8))))
+
+(minimize B)
+(check-sat)
+(get-objectives)
+(exit)
+; what if we want to compute the shortest path from G to every node?
+; => multi-objective, boxed optimization
+;(set-option :opt.priority box)
+;(minimize A)
+;(minimize B)
+;(minimize C)
+;(minimize D)
+;(minimize E)
+;(minimize F)
+;(minimize G)
+;(minimize H)
+;(check-sat)
+
