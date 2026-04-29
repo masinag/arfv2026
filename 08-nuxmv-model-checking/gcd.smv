@@ -1,0 +1,20 @@
+MODULE main
+VAR
+  a : 0..100; b : 0..100;
+  pc: {l1, l2, l3, l4, l5};
+
+INIT
+  pc = l1;
+
+TRANS
+  pc = l1 -> (next(pc) = (a != b ? l2 : l5) & next(a) = a & next(b) = b);
+TRANS
+  pc = l2 -> (next(pc) = (a  > b ? l3 : l4) & next(a) = a & next(b) = b);
+TRANS
+  pc = l3 -> (next(pc) = l1 & next(a) = a - b & next(b) = b);
+TRANS
+  pc = l4 -> (next(pc) = l1 & next(a) =     a & next(b) = b - a);
+
+LTLSPEC (a=16 & b=12) -> F (a=4 & b=4);
+INVARSPEC a > 0 & b > 0;
+  
