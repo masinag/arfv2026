@@ -34,7 +34,7 @@ ASSIGN
   next(pos) := case
     turn = DICE : min(pos + dice, 10);
     turn = GOOD : min(pos + 2, 10);
-    turn = BAD  : max(pos - 2, 0);
+    turn = BAD  : max(pos - 2, 1);
   esac;
 
 TRANS
