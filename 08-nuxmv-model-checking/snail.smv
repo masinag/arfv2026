@@ -3,7 +3,7 @@ FROZENVAR
   good : array 0..1 of 1..10;
   bad  : array 0..1 of 1..10;
 VAR
-  pos   : 0..10;
+  pos   : 1..10;
   turn  : {DICE, GOOD, BAD};
   steps : 0..100;
   dice  : 1..3;
