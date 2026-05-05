@@ -1,0 +1,27 @@
+MODULE main
+VAR
+  cabbage : {left, right};
+  sheep   : {left, right};
+  wolf    : {left, right};
+  man     : {left, right};
+  move    : {c, s, w, e};
+DEFINE
+  carry_cabbage := move = c;
+  carry_sheep   := move = s;
+  carry_wolf    := move = w;
+  no_carry      := move = e;
+  state_safe    := (sheep = wolf | sheep = cabbage) -> sheep = man;
+INIT
+  cabbage = right & sheep = right & wolf = right & man = right;
+INVAR -- to carry an item, the man has to be on the same side of the river
+  (man != cabbage -> !carry_cabbage) &
+  (man != sheep   -> !carry_sheep)   &
+  (man != wolf    -> !carry_wolf);
+TRANS -- the man crosses the river at every turn
+  (next(man) != man);
+TRANS -- if the man carries an item, then only that item crosses the river
+  (carry_cabbage <-> next(cabbage)!=cabbage) &
+  (carry_sheep   <-> next(sheep)!=sheep) &
+  (carry_wolf    <-> next(wolf)!=wolf);
+LTLSPEC -- find a "plan" to move all the items to the other side, staying in a safe state
+  ! (state_safe U (cabbage = left & sheep = left & wolf = left));
