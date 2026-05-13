@@ -1,0 +1,14 @@
+MODULE main
+VAR
+  out : 0..15;
+ASSIGN
+  init(out) := 0;
+  next(out) := case
+    out = 7 : 0;
+    TRUE : (out + 1) mod 16;
+  esac;
+
+INVARSPEC
+  out in 0..10;
+INVARSPEC
+  out in 0..7;
