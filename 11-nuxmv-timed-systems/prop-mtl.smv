@@ -1,0 +1,14 @@
+@TIME_DOMAIN continuous
+
+MODULE main
+VAR
+  a : boolean;
+  b : boolean;
+  c : clock;
+INIT !b;
+TRANS
+  next(b) = !b & next(c) = 0;
+INVAR
+  TRUE -> c < 1;
+URGENT
+  (a & b);
