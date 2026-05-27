@@ -1,0 +1,31 @@
+MODULE StopWatch
+VAR
+  mode : {on, off};
+  x : continuous;
+EVENT
+  toggle, reset;
+FLOW
+  mode = on  -> der(x) = 1;
+FLOW
+  mode = off -> der(x) = 0;
+TRANS
+  EVENT  = reset  -> next(x) = 0;
+TRANS
+  EVENT  = toggle -> next(mode) != mode;
+TRANS
+  EVENT != reset ->  next(x) = x;
+
+MODULE Controller
+EVENT toggle, reset;
+
+MODULE main
+VAR
+  stopwatch: StopWatch;
+  controller: Controller;
+INIT
+  stopwatch.x = 0 & stopwatch.mode = off;
+SYNC controller, stopwatch EVENTS toggle, toggle;
+SYNC controller, stopwatch EVENTS reset,  reset;
+
+INVARSPEC stopwatch.x >= 0;
+LTLSPEC G (stopwatch.mode = off -> stopwatch.x = 0);

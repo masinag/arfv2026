@@ -1,0 +1,58 @@
+MODULE main
+FROZENVAR
+  cell : array 1..16 of {GREEN, SPEED};
+VAR
+  player: {you, rob, giu, jin, none};
+  dice : 1..4;
+  pos: 0..16;
+DEFINE
+  WIN := pos = 16;
+  LOSE := player = none & pos < 16;
+  BEGIN := pos = 0;
+INIT
+  cell[ 1] = GREEN &
+  cell[ 2] = GREEN &
+  cell[ 3] = GREEN &
+  cell[ 4] = SPEED &
+  cell[ 5] = SPEED &
+  cell[ 6] = GREEN &
+  cell[ 7] = GREEN &
+  cell[ 8] = SPEED &
+  cell[ 9] = SPEED &
+  cell[10] = GREEN &
+  cell[11] = GREEN &
+  cell[12] = GREEN &
+  cell[13] = SPEED &
+  cell[14] = GREEN &
+  cell[15] = GREEN &
+  cell[16] = GREEN &
+  player = you & BEGIN;
+
+
+TRANS
+  next(dice) != dice;
+ASSIGN
+  next(pos) := case
+    WIN | LOSE : pos;
+    TRUE : min(16, pos + dice);
+  esac;
+
+  next(player) := case
+    next(WIN | (!BEGIN & cell[pos] = SPEED)) : player;
+    player = you : rob;
+    player = rob : giu;
+    player = giu : jin;
+    player = jin : none;
+    player = none: none;
+  esac;
+
+-- Is there an execution such that the players win?
+LTLSPEC
+  ! F WIN;
+-- Is there an execution such that the players lose?
+LTLSPEC
+  ! F LOSE;
+-- Is there an execution such that the players win without reaching a single simple green cell?
+LTLSPEC
+  ! ((F WIN) & (G (BEGIN | WIN | cell[pos] != GREEN)))
+
